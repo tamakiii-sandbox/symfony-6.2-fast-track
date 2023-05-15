@@ -3,10 +3,11 @@ services:
   php:
     build: docker/php
     working_dir: /opt/tamakiii-sandbox/symfony-6.2-fast-track
+    ports:
+      - 8000:8000
     volumes:
       - .:/opt/tamakiii-sandbox/symfony-6.2-fast-track
 
-services:
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-15}-alpine
