@@ -28,8 +28,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');"
 
 RUN curl -o /tmp/libsodium-1.0.18.tar.gz https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz && \
-    test $(sha256sum /tmp/libsodium-1.0.18.tar.gz | awk '{ print $1 }') = "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1" && \
-    tar -xvzf /tmp/libsodium-1.0.18.tar.gz && \
+    test $(sha256sum /tmp/libsodium-1.0.18.tar.gz | awk '{ print $1 }') = "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1"
+
+RUN mkdir /tmp/libsodium-1.0.18 && \
+    tar -xvzf /tmp/libsodium-1.0.18.tar.gz -C /tmp/libsodium-1.0.18 --strip-components 1 && \
+    ls -lsah /tmp/libsodium-1.0.18 && \
     cd /tmp/libsodium-1.0.18 && \
     ./configure && \
     make && \
@@ -39,14 +42,14 @@ RUN curl -o /tmp/libsodium-1.0.18.tar.gz https://download.libsodium.org/libsodiu
 
 RUN echo 'extension=sodium.so' > /etc/php.d/40-sodium.ini
 
-# --
+# # --
 
-RUN dnf update && \
-    dnf install -y \
-      docker \
-      && \
-    dnf clean all && \
-    rm -rf /var/cache/dnf
+# RUN dnf update && \
+#     dnf install -y \
+#       docker \
+#       && \
+#     dnf clean all && \
+#     rm -rf /var/cache/dnf
 
-RUN curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
-    chmod +x /usr/local/bin/docker-compose
+# RUN curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+#     chmod +x /usr/local/bin/docker-compose
