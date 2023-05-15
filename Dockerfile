@@ -1,0 +1,1 @@
+FROM amazonlinux:2023.0.20230503.0
